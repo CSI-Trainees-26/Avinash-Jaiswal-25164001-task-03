@@ -500,6 +500,15 @@ class _HomePageState extends State<HomePage> {
 
           onTap: (index) {
 
+            if (index == 1) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Categories section coming soon'),
+                ),
+              );
+            }
+
+
             if (index == 2) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -507,7 +516,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
-
             if (index == 3) {
               Navigator.push(
                 context,
