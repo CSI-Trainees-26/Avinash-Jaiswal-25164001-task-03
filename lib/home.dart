@@ -1,69 +1,72 @@
 import 'package:flutter/material.dart';
 import 'product_details.dart';
 import 'cart.dart';
-void main() {
-  runApp(const MyApp());
-}
+import 'cart-data.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: const Text(''),
+          title:Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 5),
+
+            child: Row(
+              children: [
+
+                const Icon(
+                  Icons.eco,
+                  color: Color(0xFF007A5E),
+                  size: 24,
+                ),
+
+                const SizedBox(width: 5),
+
+                const Text(
+                  'FreshRush',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF007A5E),
+                  ),
+                ),
+
+                const Spacer(),
+
+                Container(
+                  height: 35,
+                  width: 35,
+
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                  ),
+
+                  child: const Icon(
+                    Icons.person,
+                    size: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
+
         body:  SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
-
-              //   Top heading
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 5),
-
-                  child: Row(
-                    children: [
-
-                      const Icon(
-                        Icons.eco,
-                        color: Color(0xFF007A5E),
-                        size: 24,
-                      ),
-
-                      const SizedBox(width: 5),
-
-                      const Text(
-                        'FreshRush',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF007A5E),
-                        ),
-                      ),
-
-                      const Spacer(),
-
-                      Container(
-                        height: 35,
-                        width: 35,
-
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-
-                        child: const Icon(
-                          Icons.person,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
               //   searchbar for items
                 Padding(
@@ -73,6 +76,10 @@ class MyApp extends StatelessWidget {
                   ),
 
                   child: TextField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
                       hintText: "Search 'fruits', 'milk', 'snacks'...",
 
@@ -196,6 +203,7 @@ class MyApp extends StatelessWidget {
 
                     children: [
 
+                      if (searchMatch('Fresh Apple'))
                       productCard(
                         'assets/images/apple-image.png',
                         'Fresh Apple',
@@ -206,15 +214,22 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/apple-image.png',
+                                name: 'Fresh Apple',
+                                quantity: '2 pcs',
+                                price: '₹149',
+                                offer: '25% OFF',
+                              ),
                             ),
                           );
                         },
 
                       ),
 
+                      if (searchMatch('Fresh Banana'))
                       productCard(
-                        'assets/images/apple-image.png',
+                        'assets/images/banana.jpg',
                         'Fresh Banana',
                         '2 pcs',
                         '₹149',
@@ -223,14 +238,21 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/banana.jpg',
+                                name: 'Fresh Banana',
+                                quantity: '2 pcs',
+                                price: '₹149',
+                                offer: '10% OFF',
+                              ),
                             ),
                           );
                         },
                       ),
 
+                      if (searchMatch('Fresh Spinach'))
                       productCard(
-                        'assets/images/apple-image.png',
+                        'assets/images/spinach.jpg',
                         'Fresh Spinach',
                         '250g',
                         '₹45',
@@ -239,7 +261,13 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/spinach.jpg',
+                                name: 'Fresh Spinach',
+                                quantity: '250g',
+                                price: '₹45',
+                                offer: 'FRESH',
+                              ),
                             ),
                           );
                         },
@@ -270,7 +298,7 @@ class MyApp extends StatelessWidget {
                     children: [
 
                       productCard(
-                        'assets/images/milk.png',
+                        'assets/images/milk-image.png',
                         'Farm Fresh Whole Milk',
                         '1 Litre',
                         '₹68',
@@ -279,14 +307,20 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/milk-image.png',
+                                name: 'Farm Fresh Whole Milk',
+                                quantity: '1 Litre',
+                                price: '₹68',
+                                offer: 'FRESH',
+                              ),
                             ),
                           );
                         },
                       ),
 
                       productCard(
-                        'assets/images/milk.png',
+                        'assets/images/egg.jpg',
                         'Free-Range Brown Eggs',
                         '6 pcs',
                         '₹75',
@@ -295,14 +329,20 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/egg.jpg',
+                                name: 'Free-Range Brown Eggs',
+                                quantity: '6 pcs',
+                                price: '₹75',
+                                offer: 'FRESH',
+                              ),
                             ),
                           );
                         },
                       ),
 
                       productCard(
-                        'assets/images/bread.png',
+                        'assets/images/bread.jpg',
                         'Whole Wheat Bread',
                         '400g',
                         '₹45',
@@ -311,7 +351,13 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/bread.jpg',
+                                name: 'Whole Wheat Bread',
+                                quantity: '400g',
+                                price: '₹45',
+                                offer: 'FRESH',
+                              ),
                             ),
                           );
                         },
@@ -341,7 +387,7 @@ class MyApp extends StatelessWidget {
                     children: [
 
                       productCard(
-                        'assets/images/chips.png',
+                        'assets/images/almonds.jpg',
                         'Roasted California Almonds',
                         '200g',
                         '₹180',
@@ -350,14 +396,20 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/almonds.jpg',
+                                name: 'Roasted California Almonds',
+                                quantity: '200g',
+                                price: '₹180',
+                                offer: '15% OFF',
+                              ),
                             ),
                           );
                         },
                       ),
 
                       productCard(
-                        'assets/images/chips.png',
+                        'assets/images/salt.jpg',
                         'Artisanal Sea Salt',
                         '110g',
                         '₹60',
@@ -366,14 +418,20 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/salt.jpg',
+                                name: 'Artisanal Sea Salt',
+                                quantity: '110g',
+                                price: '₹60',
+                                offer: 'FRESH',
+                              ),
                             ),
                           );
                         },
                       ),
 
                       productCard(
-                        'assets/images/chips.png',
+                        'assets/images/dark.png',
                         '70% Dark Chocolate',
                         '100g',
                         '₹99',
@@ -382,7 +440,13 @@ class MyApp extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProductDetailsPage(),
+                              builder: (context) => const ProductDetailsPage(
+                                image: 'assets/images/dark.png',
+                                name: '70% Dark Chocolate',
+                                quantity: '100g',
+                                price: '₹99',
+                                offer: '20% OFF',
+                              ),
                             ),
                           );
                         },
@@ -396,7 +460,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-      
+
       //   navigation bar
 
         bottomNavigationBar: BottomNavigationBar(
@@ -442,9 +506,20 @@ class MyApp extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
+
   }
+  // filter by search
+  bool searchMatch(String name) {
+    String searchText = searchController.text.toLowerCase();
+
+    if (searchText.isEmpty) {
+      return true;
+    }
+
+    return name.toLowerCase().contains(searchText);
+  }
+
   // item card function
   Widget aisle(IconData icon, String name) {
     return Container(
@@ -559,6 +634,7 @@ class MyApp extends StatelessWidget {
           children: [
       
             // Product image
+
             Container(
               height: 110,
               width: double.infinity,
@@ -631,7 +707,15 @@ class MyApp extends StatelessWidget {
                   // clickable add button to add item to cart
                   GestureDetector(
                     onTap: () {
-                      print('$name added to cart');
+                      addToCart(
+                        image: image,
+                        name: name,
+                        quantity: quantity,
+                        price: int.parse(
+                          price.replaceAll('₹', ''),
+                        ),
+                        offer: offer,
+                      );
                     },
 
                     child: Container(

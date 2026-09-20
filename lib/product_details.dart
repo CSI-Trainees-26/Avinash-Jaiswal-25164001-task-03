@@ -1,13 +1,32 @@
 import 'package:flutter/material.dart';
 
+class ProductDetailsPage extends StatefulWidget {
+  final String image;
+  final String name;
+  final String quantity;
+  final String price;
+  final String offer;
 
-class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({super.key});
+  const ProductDetailsPage({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.quantity,
+    required this.price,
+    required this.offer,
+  });
+
+
+  State<ProductDetailsPage> createState() =>
+      _ProductDetailsPageState();
+}
+class _ProductDetailsPageState
+    extends State<ProductDetailsPage> {
 
   @override
+
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
 
@@ -42,8 +61,8 @@ class ProductDetailsPage extends StatelessWidget {
         body: SingleChildScrollView(
 
           child: Column(
-            children:[
-            // item image
+            children: [
+              // item image
 
               Container(
                 height: 280,
@@ -53,11 +72,11 @@ class ProductDetailsPage extends StatelessWidget {
 
                 // image add here at last
                 child: Image.asset(
-                    "assets/images/apple-image.png",
-                fit: BoxFit.cover, ),
+                  widget.image,
+                  fit: BoxFit.cover,),
               ),
 
-            // delivery msg
+              // delivery msg
 
               const SizedBox(height: 10),
 
@@ -104,7 +123,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ),
 
-            //   item info
+              //   item info
 
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -114,8 +133,8 @@ class ProductDetailsPage extends StatelessWidget {
 
                   children: [
 
-                    const Text(
-                      'Fresh Organic Apple (2 pcs)',
+                     Text(
+                      widget.name,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -134,38 +153,36 @@ class ProductDetailsPage extends StatelessWidget {
 
                     const SizedBox(height: 12),
 
-                    const Row(
+                    Row(
                       children: [
-
                         Text(
-                          '₹149',
-                          style: TextStyle(
+                          widget.price,
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
 
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
 
                         Text(
-                          '₹199',
-                          style: TextStyle(
+                          widget.price,
+                          style: const TextStyle(
                             color: Colors.grey,
                             decoration: TextDecoration.lineThrough,
                           ),
                         ),
 
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
 
                         Text(
-                          '25% OFF',
-                          style: TextStyle(
+                          widget.offer,
+                          style: const TextStyle(
                             fontSize: 11,
                             color: Colors.orange,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-
                       ],
                     ),
 
@@ -181,7 +198,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ),
 
-            //   price section
+              //   price section
 
               const SizedBox(height: 15),
 
@@ -226,7 +243,7 @@ class ProductDetailsPage extends StatelessWidget {
 
               // offer box
               const SizedBox(height: 10),
-            // Ist offer
+              // Ist offer
               Padding(
                 padding: const EdgeInsets.all(8.0),
 
@@ -289,7 +306,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
 
               ),
-            // Other offers
+              // Other offers
               const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -351,7 +368,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ),
 
-            // 3rd offer
+              // 3rd offer
               const SizedBox(height: 8),
 
               Padding(
@@ -414,7 +431,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ),
 
-            // rating of item
+              // rating of item
 
               const SizedBox(height: 15),
 
@@ -612,7 +629,7 @@ class ProductDetailsPage extends StatelessWidget {
           ),
         ),
 
-      ),
-    );
+      );
+
   }
-}
+ }

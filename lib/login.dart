@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: SingleChildScrollView(
 
           child: Padding(
@@ -153,9 +149,13 @@ class MyApp extends StatelessWidget {
 
                     child: ElevatedButton(
                       onPressed: () {
-                        print('Login button pressed');
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
                       },
-
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF16A085),
                         foregroundColor: Colors.white,
@@ -256,7 +256,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }
