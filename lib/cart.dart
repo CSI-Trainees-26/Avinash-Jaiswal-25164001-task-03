@@ -36,14 +36,11 @@ class MyApp extends StatelessWidget {
                       Container(
                         height: 80,
                         width: 80,
-                        // Have to add image here....
                         color: const Color(0xFFE8F5EF),
-          
-                        child: const Icon(
-                          Icons.apple,
-                          size: 45,
-                          color: Color(0xFF007A5E),
-                        ),
+                      child:Image.asset(
+                        "assets/images/apple-image.png",
+                        fit: BoxFit.cover,
+                      ),
                       ),
           
                       const SizedBox(width: 15),
@@ -111,21 +108,16 @@ class MyApp extends StatelessWidget {
           
                   child: Row(
                     children: [
-          
-                      // item image
                       Container(
                         height: 80,
                         width: 80,
-
-                        // Have to add image here....
           
                         color: const Color(0xFFE8F5EF),
-          
-                        child: const Icon(
-                          Icons.eco,
-                          size: 45,
-                          color: Color(0xFF007A5E),
-                        ),
+                      child: Image.asset(
+                        'assets/images/banana.jpg',
+                        fit: BoxFit.cover,
+                      ),
+
                       ),
           
                       const SizedBox(width: 15),
