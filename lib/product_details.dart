@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'cart-data.dart';
+
 
 class ProductDetailsPage extends StatefulWidget {
   final String image;
@@ -16,13 +18,14 @@ class ProductDetailsPage extends StatefulWidget {
     required this.offer,
   });
 
-
-  State<ProductDetailsPage> createState() =>
-      _ProductDetailsPageState();
+  @override
+  State<ProductDetailsPage> createState() {
+    return _ProductDetailsPageState();
+  }
 }
 class _ProductDetailsPageState
     extends State<ProductDetailsPage> {
-
+   int quantity = 1;
   @override
 
   Widget build(BuildContext context) {
@@ -573,23 +576,25 @@ class _ProductDetailsPageState
         ),
 
         // add button
-        bottomNavigationBar: Container(
+      bottomNavigationBar: SafeArea(
+        top:false,
+        child: Container(
           padding: const EdgeInsets.all(10),
-
           color: Colors.white,
 
-          child: Row(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
 
-              const Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
+              // Price and quantity
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
 
-                      Text(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
                         'Total Price',
                         style: TextStyle(
                           fontSize: 11,
@@ -598,36 +603,104 @@ class _ProductDetailsPageState
                       ),
 
                       Text(
-                        '₹149',
-                        style: TextStyle(
+                        '₹${int.parse(widget.price.replaceAll('₹', '')) * quantity}',
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                     ],
+                  ),
+
+                  // Quantity selector
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xFF007A5E),
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            if (quantity > 1) {
+                              setState(() {
+                                quantity--;
+                              });
+                            }
+                          },
+                          icon: const Icon(Icons.remove),
+                          color: const Color(0xFF007A5E),
+                        ),
+
+                        Text(
+                          '$quantity',
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              quantity++;
+                            });
+                          },
+                          icon: const Icon(Icons.add),
+                          color: const Color(0xFF007A5E),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ],
+              ),
+
+              const SizedBox(height: 10),
+
+              // Add to Cart button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    addToCart(
+                      image: widget.image,
+                      name: widget.name,
+                      quantity: widget.quantity,
+                      price: int.parse(
+                        widget.price.replaceAll('₹', ''),
+                      ),
+                      offer: widget.offer,
+                      cartQuantity: quantity,
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Added to cart'),
+                      ),
+                    );
+                  },
+
+                  icon: const Icon(Icons.add),
+
+                  label: const Text('Add to Cart'),
+
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF007A5E),
+                    foregroundColor: Colors.white,
                   ),
                 ),
               ),
-
-              ElevatedButton.icon(
-                onPressed: () {
-                  print('Product added to cart');
-                },
-
-                icon: const Icon(Icons.add),
-
-                label: const Text('Add to Cart'),
-
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF007A5E),
-                  foregroundColor: Colors.white,
-                ),
-              ),
             ],
-
           ),
         ),
+      ),
 
       );
 

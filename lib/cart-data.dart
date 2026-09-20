@@ -7,13 +7,21 @@ void addToCart({
   required String quantity,
   required int price,
   required String offer,
+  int cartQuantity = 1,
 }) {
+  for (var product in cartItems) {
+    if (product['name'] == name) {
+      product['cartQuantity'] += cartQuantity;
+      return;
+    }
+  }
+
   cartItems.add({
     'image': image,
     'name': name,
     'quantity': quantity,
     'price': price,
     'offer': offer,
-    'cartQuantity': 1,
+    'cartQuantity': cartQuantity,
   });
 }

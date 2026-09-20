@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final TextEditingController searchController = TextEditingController();
+  String selectedCategory = 'All';
+
 
   @override
 
@@ -152,27 +154,38 @@ class _HomePageState extends State<HomePage> {
                     children: [
 
                       aisle(
+                        Icons.apps,
+                        'All',
+                        'All',
+                      ),
+
+                      aisle(
                         Icons.eco,
                         'Fruits &\nVeggies',
+                        'Fruits',
                       ),
 
                       aisle(
                         Icons.local_drink,
                         'Dairy &\nEggs',
+                        'Dairy',
                       ),
 
                       aisle(
                         Icons.fastfood,
                         'Snacks &\nMunchies',
+                        'Snacks',
                       ),
 
                       aisle(
                         Icons.local_bar,
                         'Beverages',
+                        'Beverages',
                       ),
 
                       aisle(
                         Icons.bakery_dining,
+                        'Bakery',
                         'Bakery',
                       ),
 
@@ -183,6 +196,7 @@ class _HomePageState extends State<HomePage> {
               //   1st item section
                 const SizedBox(height: 15),
 
+            if (selectedCategory == 'All' || selectedCategory == 'Fruits') ...[
                 sectionTitle(
                   'Fresh Produce',
                 ),
@@ -276,10 +290,13 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+              ],
 
               //    item cards to display item of dairy and eggs
 
                 const SizedBox(height: 20),
+
+                if (selectedCategory == 'All' || selectedCategory == 'Dairy') ...[
 
                 sectionTitle('Dairy & Breakfast'),
 
@@ -297,6 +314,7 @@ class _HomePageState extends State<HomePage> {
 
                     children: [
 
+                      if (searchMatch('Farm Fresh Whole Milk'))
                       productCard(
                         'assets/images/milk-image.png',
                         'Farm Fresh Whole Milk',
@@ -319,11 +337,12 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
 
+                      if (searchMatch('Free-Range Brown Eggs'))
                       productCard(
-                        'assets/images/egg.jpg',
+                        'assets/images/eggs.jpg',
                         'Free-Range Brown Eggs',
                         '6 pcs',
-                        '₹75',
+                        '₹72',
                         'FRESH',
                             () {
                           Navigator.push(
@@ -333,7 +352,7 @@ class _HomePageState extends State<HomePage> {
                                 image: 'assets/images/egg.jpg',
                                 name: 'Free-Range Brown Eggs',
                                 quantity: '6 pcs',
-                                price: '₹75',
+                                price: '₹72',
                                 offer: 'FRESH',
                               ),
                             ),
@@ -341,6 +360,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
 
+                      if (searchMatch('Whole Wheat Bread'))
                       productCard(
                         'assets/images/bread.jpg',
                         'Whole Wheat Bread',
@@ -365,10 +385,13 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+                ],
 
                 //    item cards to display item of snacks and munchies
 
                 const SizedBox(height: 20),
+
+                if (selectedCategory == 'All' || selectedCategory == 'Snacks') ...[
 
                 sectionTitle('Snacks & Munchies'),
 
@@ -386,6 +409,7 @@ class _HomePageState extends State<HomePage> {
 
                     children: [
 
+                      if (searchMatch('Roasted California Almonds'))
                       productCard(
                         'assets/images/almonds.jpg',
                         'Roasted California Almonds',
@@ -408,6 +432,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
 
+                      if (searchMatch('Artisanal Sea Salt'))
                       productCard(
                         'assets/images/salt.jpg',
                         'Artisanal Sea Salt',
@@ -430,6 +455,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
 
+                      if (searchMatch('70% Dark Chocolate'))
                       productCard(
                         'assets/images/dark.png',
                         '70% Dark Chocolate',
@@ -454,6 +480,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+              ],
 
 
               ],
@@ -473,6 +500,14 @@ class _HomePageState extends State<HomePage> {
 
           onTap: (index) {
 
+            if (index == 2) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Deals section coming soon'),
+                ),
+              );
+            }
+
             if (index == 3) {
               Navigator.push(
                 context,
@@ -484,7 +519,7 @@ class _HomePageState extends State<HomePage> {
 
           },
 
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
@@ -501,7 +536,39 @@ class _HomePageState extends State<HomePage> {
             ),
 
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
+              icon: SizedBox(
+                width: 30,
+                height: 30,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    const Icon(
+                      Icons.shopping_cart,
+                      size: 24,
+                    ),
+
+                    if (cartItems.isNotEmpty)
+                      Positioned(
+                        right: -5,
+                        top: -5,
+                        child: Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${cartItems.length}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
               label: 'Cart',
             ),
           ],
@@ -521,49 +588,59 @@ class _HomePageState extends State<HomePage> {
   }
 
   // item card function
-  Widget aisle(IconData icon, String name) {
-    return Container(
-      width: 75,
+  Widget aisle(
+      IconData icon,
+      String name,
+      String category,
+      ) {
+    return GestureDetector(
 
-      margin: const EdgeInsets.only(
-        right: 10,
-      ),
+      onTap: () {
+        setState(() {
+          selectedCategory = category;
+        });
 
-      child: Column(
-        children: [
-
-          Container(
-            height: 60,
-            width: 60,
-
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
+        if (category == 'Beverages' || category == 'Bakery') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$category products coming soon'),
             ),
+          );
+        }
+      },
 
-            child: Icon(
-              icon,
-              color: const Color(0xFF007A5E),
-              size: 30,
+      child: Container(
+        width: 75,
+        margin: const EdgeInsets.only(right: 10),
+        child: Column(
+          children: [
+            Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Icon(
+                icon,
+                color: const Color(0xFF007A5E),
+                size: 30,
+              ),
             ),
-          ),
-
-          const SizedBox(height: 5),
-
-          Text(
-            name,
-            textAlign: TextAlign.center,
-
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 5),
+            Text(
+              name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
 //   item section function
 
   Widget sectionTitle(String title) {

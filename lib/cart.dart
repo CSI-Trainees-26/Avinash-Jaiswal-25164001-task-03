@@ -9,6 +9,30 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+
+  int get subtotal {
+    int total = 0;
+
+    for (var product in cartItems) {
+      total += (product['price'] as int) *
+          (product['cartQuantity'] as int);
+    }
+
+    return total;
+  }
+
+  int get deliveryCharge {
+    if (subtotal == 0) {
+      return 0;
+    }
+
+    return 30;
+  }
+
+  int get totalAmount {
+    return subtotal + deliveryCharge;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,16 +117,7 @@ class _CartPageState extends State<CartPage> {
                           ),
 
                         //   button to increase and decrease the quantity
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                product['cartQuantity']++;
-                              });
-                            },
-                            icon: const Icon(Icons.add),
-                          ),
-
-                        //   decrease button
+                          //   decrease button
                           IconButton(
                             onPressed: () {
                               setState(() {
@@ -115,11 +130,25 @@ class _CartPageState extends State<CartPage> {
                             },
                             icon: const Icon(Icons.remove),
                           ),
+
+                          // increase button
+
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                product['cartQuantity']++;
+                              });
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+
+
                         ],
                       ),
                     );
                   },
                 ),
+
                 // Order summary widget
           
                 const SizedBox(height: 30),
@@ -137,16 +166,16 @@ class _CartPageState extends State<CartPage> {
                 ),
           
                 const SizedBox(height: 15),
-          
-                const Row(
+
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          
+
                   children: [
-                    Text('Subtotal'),
-          
+                    const Text('Subtotal'),
+
                     Text(
-                      '₹240',
-                      style: TextStyle(
+                      '₹$subtotal',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -155,27 +184,27 @@ class _CartPageState extends State<CartPage> {
           
               //   fee widget
                 const SizedBox(height: 10),
-          
-                const Row(
+
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          
+
                   children: [
-                    Text('Delivery Charge'),
-          
+                    const Text('Delivery Charge'),
+
                     Text(
-                      '₹30',
-                      style: TextStyle(
+                      '₹$deliveryCharge',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-          
+
               //   total amount widget
           
                 const SizedBox(height: 15),
           
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
           
                   children: [
@@ -188,7 +217,7 @@ class _CartPageState extends State<CartPage> {
                     ),
           
                     Text(
-                      '₹270',
+                      '₹$totalAmount',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
