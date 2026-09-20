@@ -36,55 +36,60 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('My Cart'),
-          backgroundColor: Colors.white,
-        ),
-        body:SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
+      appBar: AppBar(
+        title: const Text('My Cart'),
+        backgroundColor: Colors.white,
+      ),
 
-                // Cart items
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
 
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: cartItems.length,
+          child: Column(
+            children: [
 
-                  itemBuilder: (context, index) {
-                    final product = cartItems[index];
+              // Cart items
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: cartItems.length,
 
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      padding: const EdgeInsets.all(12),
+                itemBuilder: (context, index) {
+                  final product = cartItems[index];
 
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 15),
+                    padding: const EdgeInsets.all(12),
 
-                      child: Row(
-                        children: [
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
 
-                          // Product image
-                          Container(
-                            height: 80,
-                            width: 80,
-                            color: const Color(0xFFE8F5EF),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
 
-                            child: Image.asset(
-                              product['image']!,
-                              fit: BoxFit.cover,
-                            ),
+                        // Product image
+                        Container(
+                          height: 80,
+                          width: 80,
+                          color: const Color(0xFFE8F5EF),
+
+                          child: Image.asset(
+                            product['image']!,
+                            fit: BoxFit.cover,
                           ),
+                        ),
 
-                          const SizedBox(width: 15),
+                        const SizedBox(width: 10),
 
-                          // Product details
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        // Product details
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+
                             children: [
 
                               Text(
@@ -93,12 +98,14 @@ class _CartPageState extends State<CartPage> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
 
                               const SizedBox(height: 5),
 
                               Text(
-                                'Qty: ${product['cartQuantity']!}',
+                                'Qty: ${product['cartQuantity']}',
                                 style: const TextStyle(
                                   color: Colors.grey,
                                 ),
@@ -107,7 +114,7 @@ class _CartPageState extends State<CartPage> {
                               const SizedBox(height: 5),
 
                               Text(
-                                '₹${product['price']!}',
+                                '₹${product['price']}',
                                 style: const TextStyle(
                                   color: Color(0xFF007A5E),
                                   fontWeight: FontWeight.bold,
@@ -115,153 +122,246 @@ class _CartPageState extends State<CartPage> {
                               ),
                             ],
                           ),
+                        ),
 
-                        //   button to increase and decrease the quantity
-                          //   decrease button
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
+                        const SizedBox(width: 5),
 
-                                if (product['cartQuantity'] > 1) {
-                                  product['cartQuantity']--;
-                                }
+                        // Right side buttons
+                        Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.end,
 
-                              });
-                            },
-                            icon: const Icon(Icons.remove),
-                          ),
+                          children: [
 
-                          // increase button
+                            // Quantity buttons
+                            Container(
+                              height: 35,
 
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                product['cartQuantity']++;
-                              });
-                            },
-                            icon: const Icon(Icons.add),
-                          ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF007A5E),
+                                borderRadius:
+                                BorderRadius.circular(6),
+                              ),
 
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
 
-                        ],
-                      ),
-                    );
-                  },
+                                children: [
+
+                                  // Minus button
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+
+                                    constraints:
+                                    const BoxConstraints(
+                                      minWidth: 30,
+                                      minHeight: 35,
+                                    ),
+
+                                    onPressed: () {
+                                      setState(() {
+                                        if (product[
+                                        'cartQuantity'] >
+                                            1) {
+                                          product[
+                                          'cartQuantity']--;
+                                        }
+                                      });
+                                    },
+
+                                    icon: const Icon(
+                                      Icons.remove,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+
+                                  // Quantity
+                                  Text(
+                                    '${product['cartQuantity']}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                  // Plus button
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+
+                                    constraints:
+                                    const BoxConstraints(
+                                      minWidth: 30,
+                                      minHeight: 35,
+                                    ),
+
+                                    onPressed: () {
+                                      setState(() {
+                                        product[
+                                        'cartQuantity']++;
+                                      });
+                                    },
+
+                                    icon: const Icon(
+                                      Icons.add,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 8),
+
+                            // Remove button
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  cartItems.removeAt(index);
+                                });
+                              },
+
+                              child: Container(
+                                height: 35,
+                                width: 105,
+
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFF6B6B),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+
+                                alignment: Alignment.center,
+
+                                child: const Text(
+                                  'Remove',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              const SizedBox(height: 30),
+
+              const Align(
+                alignment: Alignment.centerLeft,
+
+                child: Text(
+                  'Order Summary',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+              ),
 
-                // Order summary widget
-          
-                const SizedBox(height: 30),
-          
-                const Align(
-                  alignment: Alignment.centerLeft,
-          
-                  child: Text(
-                    'Order Summary',
+              const SizedBox(height: 15),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+
+                children: [
+                  const Text('Subtotal'),
+
+                  Text(
+                    '₹$subtotal',
+
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 10),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+
+                children: [
+                  const Text('Delivery Charge'),
+
+                  Text(
+                    '₹$deliveryCharge',
+
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 15),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+
+                children: [
+
+                  Text(
+                    'Total',
+
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  Text(
+                    '₹$totalAmount',
+
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF007A5E),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 25),
+
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+
+                child: ElevatedButton(
+                  onPressed: () {
+                    print('Proceed to Pay');
+                  },
+
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF007A5E),
+                    foregroundColor: Colors.white,
+                  ),
+
+                  child: const Text(
+                    'Proceed to Pay',
+
+                    style: TextStyle(
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-          
-                const SizedBox(height: 15),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    const Text('Subtotal'),
-
-                    Text(
-                      '₹$subtotal',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-          
-              //   fee widget
-                const SizedBox(height: 10),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    const Text('Delivery Charge'),
-
-                    Text(
-                      '₹$deliveryCharge',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-
-              //   total amount widget
-          
-                const SizedBox(height: 15),
-          
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          
-                  children: [
-                    Text(
-                      'Total',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-          
-                    Text(
-                      '₹$totalAmount',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF007A5E),
-                      ),
-                    ),
-                  ],
-                ),
-          
-              //   Pay button
-                const SizedBox(height: 25),
-          
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-          
-                  child: ElevatedButton(
-                    onPressed: () {
-                      print('Proceed to Pay');
-                    },
-          
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF007A5E),
-                      foregroundColor: Colors.white,
-                    ),
-          
-                    child: const Text(
-                      'Proceed to Pay',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-          
-          
-          
-              ],
-            ),
+              ),
+            ],
           ),
-        )
-
+        ),
+      ),
     );
-
   }
 }
